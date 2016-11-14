@@ -32,6 +32,7 @@ function NarrowItDownController(MenuSearchService) {
 
   narrow.getMatchedMenuItems = function(){
     narrow.found = MenuSearchService.getMatchedMenuItems(narrow.searchTerm);
+    narrow.found = MenuSearchService.testMatch();
     console.log(narrow.found[1]);
   };
 
@@ -44,6 +45,12 @@ function NarrowItDownController(MenuSearchService) {
 MenuSearchService.$inject = ['$http', 'ApiBasePath'];
 function MenuSearchService($http, ApiBasePath){
   var service = this;
+
+  service.testMatch = function(){
+    var foundItems = ['Test','TestTwo'];
+
+    return foundItems;
+  }
 
   service.getMatchedMenuItems = function(searchTerm){
     var foundItems = [];
