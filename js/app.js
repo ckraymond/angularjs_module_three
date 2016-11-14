@@ -30,15 +30,21 @@ function NarrowItDownController(MenuSearchService) {
   narrow.searchTerm = "";
 
   narrow.getMatchedMenuItems = function() {
-    var promise = MenuSearchService.getMatchedMenuItems(narrow.searchTerm);
+    if (narrow.searchTerm != "") {
+      var promise = MenuSearchService.getMatchedMenuItems(narrow.searchTerm);
 
-    promise.then(function (response) {
-      narrow.found = response;
-      console.log(narrow.found);
-    })
-    .catch(function (error) {
-      console.log('Uh oh!');
-    });
+      promise.then(function (response) {
+        narrow.found = response;
+        console.log(narrow.found);
+      })
+      .catch(function (error) {
+        console.log('Uh oh!');
+      });
+    } else {
+      narrow.found = [];
+    }
+
+    narrow.searchTerm = "";
   };
 
   narrow.removeItem = function(index){
