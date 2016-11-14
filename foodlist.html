@@ -6,8 +6,8 @@
       <h4 class="list-group-item-heading">{{food.name}} - {{food.short_name}}</h4>
       {{food.description}}
     </div>
-    <!-- <div class="list-btn">
-      <button class="btn" ng-click = "narrow.onRemove({index: $index});">Don't want this one!</button>
-    </div> -->
+    <div class="list-btn">
+      <button class="btn" ng-click = "narrow.removeItem($index);">Don't want this one!</button>
+    </div>
   </li>
 </ul>

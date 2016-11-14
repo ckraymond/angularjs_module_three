@@ -9,11 +9,11 @@ angular.module('NarrowItDownApp', [])
 
 function FoundItems() {
   var ddo = {
-    restrict: "E",
+    restrict: "AE",
     templateUrl: 'foodlist.html',
     scope: {
-      foundItems: "=",
-      onRemove: "&"
+      found: "=",
+      onRemove: "@"
     },
     controller: NarrowItDownController,
     controllerAs: 'narrow',
@@ -29,19 +29,22 @@ function NarrowItDownController(MenuSearchService) {
   var narrow = this;
   narrow.searchTerm = "";
 
-  narrow.getMatchedMenuItems = MenuSearchService.getMatchedMenuItems(narrow.searchTerm);
+  narrow.getMatchedMenuItems = function() {
+    var promise = MenuSearchService.getMatchedMenuItems(narrow.searchTerm);
 
-  promise.then(function (response) {
-    narrow.found = response.data;
-  })
-  .catch(function (error) {
-    console.log('Uh oh!');
-  });
+    promise.then(function (response) {
+      narrow.found = response;
+      console.log(narrow.found);
+    })
+    .catch(function (error) {
+      console.log('Uh oh!');
+    });
+  };
 
-  // found.removeItem = function(index){
-  //   console.log('Removed: ' + found.meals[index].name + ' Items left: ' + found.meals.length);
-  //   found.meals = MenuSearchService.removeItem(index);
-  // };
+  narrow.removeItem = function(index){
+    console.log('Removed: ' + narrow.found[index].name + ' Items left: ' + narrow.found.length);
+    narrow.found.splice(index,1);
+  };
 }
 
 MenuSearchService.$inject = ['$http', 'ApiBasePath'];
@@ -56,35 +59,25 @@ function MenuSearchService($http, ApiBasePath){
       var foundItems = [];
 
       for(var i = 0; i < result.data.menu_items.length; i++){
-        if(result.data.menu_items[i].description.includes(searchTerm)){
+        if(result.data.menu_items[i].description.toLowerCase().includes(searchTerm.toLowerCase())){
           var item = {
             name: result.data.menu_items[i].name,
             short_name: result.data.menu_items[i].short_name,
             description: result.data.menu_items[i].description
           }
-        } else {
-          var item = {
-            name: result.data.menu_items[i].name,
-            short_name: result.data.menu_items[i].short_name,
-            description: result.data.menu_items[i].description
-          };
+          foundItems.push(item);
         }
 
-        foundItems.push(item);
+
       };
 
-      console.log(foundItems);
+      // console.log(foundItems);
       return foundItems;
-
     })
     .catch(function (errorResponse) {
       console.log("Not working!");
     });
   };
-
-  // service.removeItem = function(index){
-  //   found.meals.splice(index,1);
-  // };
 
 }
 
