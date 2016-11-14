@@ -1,0 +1,13 @@
+<h2> List of Menu Items</h2>
+
+<ul class="list-group">
+  <li class="list-group-item"  ng-repeat = "food in narrow.found">
+    <div class="list-group-item-text">
+      <h4 class="list-group-item-heading">{{food.name}}</h4>
+      {{food.description}}
+    </div>
+    <!-- <div class="list-btn">
+      <button class="btn" ng-click = "narrow.onRemove({index: $index});">Don't want this one!</button>
+    </div> -->
+  </li>
+</ul>
